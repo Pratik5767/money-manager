@@ -6,4 +6,6 @@ public interface IProfileService {
 
 	public ProfileDto registerProfile(ProfileDto profileDto);
 	
+	public boolean activateProfile(String activationToken);
+	
 }

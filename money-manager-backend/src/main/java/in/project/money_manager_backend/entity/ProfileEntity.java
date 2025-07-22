@@ -39,7 +39,7 @@ public class ProfileEntity {
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 	private Boolean isActive;
-	private String activcationToken;
+	private String activationToken;
 	
 	@PrePersist
 	public void prePresist() {
