@@ -1,4 +1,4 @@
-package in.project.money_manager_backend.service;
+package in.project.money_manager_backend.service.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,6 +28,5 @@ public class EmailServiceImpl implements IEmailService {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
-		
 	}
 }

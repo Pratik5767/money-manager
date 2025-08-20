@@ -1,4 +1,4 @@
-package in.project.money_manager_backend.service;
+package in.project.money_manager_backend.service.email;
 
 public interface IEmailService {
 
