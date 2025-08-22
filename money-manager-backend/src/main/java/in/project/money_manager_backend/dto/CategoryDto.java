@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CategoryDto {
 	
 	private Long id;
-	private String profileId;
+	private Long profileId;
 	private String name;
 	private String icon;
 	private String type;
