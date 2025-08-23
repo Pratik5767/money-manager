@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import in.project.money_manager_backend.dto.CategoryDto;
-import in.project.money_manager_backend.entity.CategoryEntitiy;
+import in.project.money_manager_backend.entity.CategoryEntity;
 import in.project.money_manager_backend.entity.ProfileEntity;
 import in.project.money_manager_backend.repository.CategoryRepository;
 import in.project.money_manager_backend.service.profile.IProfileService;
@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements ICategoryService {
 			throw new RuntimeException("Category with this name already exists");
 		}
 
-		CategoryEntitiy newCategory = convertToEntity(dto, profile);
+		CategoryEntity newCategory = convertToEntity(dto, profile);
 		newCategory = categoryRepository.save(newCategory);
 		return convertToDto(newCategory);
 	}
@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public List<CategoryDto> getCategoriesForCurrentUsers() {
 		ProfileEntity profile = profileService.getCurrentProfile();
-		List<CategoryEntitiy> categories = categoryRepository.findByProfileId(profile.getId());
+		List<CategoryEntity> categories = categoryRepository.findByProfileId(profile.getId());
 		return categories.stream().map(this::convertToDto).toList();
 	}
 
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public List<CategoryDto> getCategoriesByTypeForCurrentUsers(String type) {
 		ProfileEntity profile = profileService.getCurrentProfile();
-		List<CategoryEntitiy> entities = categoryRepository.findByTypeAndProfileId(type, profile.getId());
+		List<CategoryEntity> entities = categoryRepository.findByTypeAndProfileId(type, profile.getId());
 		return entities.stream().map(this::convertToDto).toList();
 	}
 
@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	public CategoryDto updateCategory(Long categoryId, CategoryDto dto) {
 		ProfileEntity profile = profileService.getCurrentProfile();
 		
-		CategoryEntitiy existingCategory = categoryRepository.findByIdAndProfileId(categoryId, profile.getId())
+		CategoryEntity existingCategory = categoryRepository.findByIdAndProfileId(categoryId, profile.getId())
 				.orElseThrow(() -> new RuntimeException("Category not found or not accessible"));
 		
 		existingCategory.setName(dto.getName());
@@ -61,12 +61,12 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	// helper methods
-	private CategoryEntitiy convertToEntity(CategoryDto dto, ProfileEntity profile) {
-		return CategoryEntitiy.builder().name(dto.getName()).icon(dto.getIcon()).profile(profile).type(dto.getType())
+	private CategoryEntity convertToEntity(CategoryDto dto, ProfileEntity profile) {
+		return CategoryEntity.builder().name(dto.getName()).icon(dto.getIcon()).profile(profile).type(dto.getType())
 				.build();
 	}
 
-	private CategoryDto convertToDto(CategoryEntitiy entity) {
+	private CategoryDto convertToDto(CategoryEntity entity) {
 		return CategoryDto.builder().id(entity.getId())
 				.profileId(entity.getProfile() != null ? entity.getProfile().getId() : null).name(entity.getName())
 				.icon(entity.getIcon()).createdAt(entity.getCreatedAt()).updatedAt(entity.getUpdatedAt())
