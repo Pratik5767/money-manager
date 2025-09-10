@@ -15,7 +15,7 @@ import in.project.money_manager_backend.dto.AuthDto;
 import in.project.money_manager_backend.dto.ProfileDto;
 import in.project.money_manager_backend.entity.ProfileEntity;
 import in.project.money_manager_backend.repository.ProfileRepository;
-import in.project.money_manager_backend.service.email.IEmailService;
+import in.project.money_manager_backend.service.EmailService;
 import in.project.money_manager_backend.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ProfileServiceImpl implements IProfileService {
 
 	private final ProfileRepository profileRepository;
-	private final IEmailService emailService;
+	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtils jwtUtils;
@@ -74,7 +74,7 @@ public class ProfileServiceImpl implements IProfileService {
 		}
 		return convertToDto(currentUser);
 	}
-	
+
 	@Override
 	public Map<String, Object> authenticateAndGenerateToken(AuthDto authDto) {
 		try {
@@ -82,10 +82,7 @@ public class ProfileServiceImpl implements IProfileService {
 					.authenticate(new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
 			// Generate JWT token
 			String token = jwtUtils.generateToken(authDto.getEmail());
-			return Map.of(
-					"token", token,
-					"user", getPublicProfile(authDto.getEmail())
-			);
+			return Map.of("token", token, "user", getPublicProfile(authDto.getEmail()));
 		} catch (Exception e) {
 			throw new RuntimeException("Invalid email or password");
 		}

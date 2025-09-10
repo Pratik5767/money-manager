@@ -1,4 +1,4 @@
-package in.project.money_manager_backend.service.email;
+package in.project.money_manager_backend.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -9,14 +9,13 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl implements IEmailService {
+public class EmailService {
 
 	private final JavaMailSender mailSender;
 
 	@Value("${spring.mail.properties.mail.smtp.from}")
 	private String fromEmail;
-	
-	@Override
+
 	public void sendEmail(String to, String subject, String body) {
 		try {
 			SimpleMailMessage message = new SimpleMailMessage();
