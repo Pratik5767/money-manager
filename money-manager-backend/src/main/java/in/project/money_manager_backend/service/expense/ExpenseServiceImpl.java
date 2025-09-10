@@ -46,6 +46,18 @@ public class ExpenseServiceImpl implements IExpenseService {
 		return expenseList.stream().map(this::convertToDto).toList();
 	}
 
+	// delete expense by id for current user
+	@Override
+	public void deleteExpense(Long expenseId) {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		ExpenseEntity entity = expenseRepository.findById(expenseId)
+				.orElseThrow(() -> new RuntimeException("Expense not found"));
+		if (!entity.getProfile().getId().equals(profile.getId())) {
+			throw new RuntimeException("Unauthorized to delete this expense");
+		}
+		expenseRepository.delete(entity);
+	}
+
 	private ExpenseEntity convertToEntity(ExpenseDto dto, ProfileEntity profile, CategoryEntity category) {
 		return ExpenseEntity.builder().name(dto.getName()).icon(dto.getIcon()).amount(dto.getAmount())
 				.date(dto.getDate()).profile(profile).category(category).build();
@@ -58,4 +70,5 @@ public class ExpenseServiceImpl implements IExpenseService {
 				.amount(entity.getAmount()).date(entity.getDate()).createdAt(entity.getCreatedAt())
 				.updatedAt(entity.getUpdatedAt()).build();
 	}
+
 }

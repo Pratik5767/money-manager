@@ -9,4 +9,6 @@ public interface IExpenseService {
 	ExpenseDto addExpense(ExpenseDto dto);
 	
 	List<ExpenseDto> getCurrentMonthExpensesForCurrentUser();
+	
+	void deleteExpense(Long expenseId);
 }
