@@ -1,8 +1,10 @@
 package in.project.money_manager_backend.service.income;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import in.project.money_manager_backend.dto.IncomeDto;
@@ -45,7 +47,7 @@ public class IncomeServiceImpl implements IIncomeService {
 				endDate);
 		return incomeList.stream().map(this::convertToDto).toList();
 	}
-	
+
 	// delete income by id for current user
 	@Override
 	public void deleteIncome(Long incomeId) {
@@ -56,6 +58,31 @@ public class IncomeServiceImpl implements IIncomeService {
 			throw new RuntimeException("Unauthorized to delete this expense");
 		}
 		incomeRepository.delete(entity);
+	}
+
+	// Get latest 5 incomes for the current user
+	@Override
+	public List<IncomeDto> getLatest5IncomeForCurrentUser() {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		List<IncomeEntity> incomes = incomeRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+		return incomes.stream().map(this::convertToDto).toList();
+	}
+
+	// Get total incomes of the current user
+	@Override
+	public BigDecimal getTotalIncomeForCurrentUser() {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		BigDecimal totalIncome = incomeRepository.findTotalIncomeByProfileId(profile.getId());
+		return totalIncome != null ? totalIncome : BigDecimal.ZERO;
+	}
+
+	// Filter Expenses
+	@Override
+	public List<IncomeDto> filterIncomes(LocalDate startDate, LocalDate endDate, String keyword, Sort sort) {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		List<IncomeEntity> incomes = incomeRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
+				profile.getId(), startDate, endDate, keyword, sort);
+		return incomes.stream().map(this::convertToDto).toList();
 	}
 
 	private IncomeEntity convertToEntity(IncomeDto dto, ProfileEntity profile, CategoryEntity category) {

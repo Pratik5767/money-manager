@@ -1,8 +1,10 @@
 package in.project.money_manager_backend.service.expense;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import in.project.money_manager_backend.dto.ExpenseDto;
@@ -56,6 +58,31 @@ public class ExpenseServiceImpl implements IExpenseService {
 			throw new RuntimeException("Unauthorized to delete this expense");
 		}
 		expenseRepository.delete(entity);
+	}
+
+	// Get latest 5 expenses for the current user
+	@Override
+	public List<ExpenseDto> getLatest5ExpensesForCurrentUser() {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		List<ExpenseEntity> expenses = expenseRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+		return expenses.stream().map(this::convertToDto).toList();
+	}
+
+	// Get total expenses of the current user
+	@Override
+	public BigDecimal getTotelExpenseForCurrentUser() {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		BigDecimal totalExpense = expenseRepository.findTotalExpenseByProfileId(profile.getId());
+		return totalExpense != null ? totalExpense : BigDecimal.ZERO;
+	}
+
+	// Filter Expenses
+	@Override
+	public List<ExpenseDto> filterExpenses(LocalDate startDate, LocalDate endDate, String keyword, Sort sort) {
+		ProfileEntity profile = profileService.getCurrentProfile();
+		List<ExpenseEntity> expenses = expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
+				profile.getId(), startDate, endDate, keyword, sort);
+		return expenses.stream().map(this::convertToDto).toList();
 	}
 
 	private ExpenseEntity convertToEntity(ExpenseDto dto, ProfileEntity profile, CategoryEntity category) {
