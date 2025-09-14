@@ -3,6 +3,7 @@ package in.project.money_manager_backend.service.profile;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,13 +30,16 @@ public class ProfileServiceImpl implements IProfileService {
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtils jwtUtils;
 
+	@Value("${app.activation.url}")
+	private String activationURL;
+
 	@Override
 	public ProfileDto registerProfile(ProfileDto profileDto) {
 		ProfileEntity newProfile = convertToEntity(profileDto);
 		newProfile.setActivationToken(UUID.randomUUID().toString());
 		newProfile = profileRepository.save(newProfile);
 		// send activation email
-		String activationLink = "http://localhost:8080/api/v1/activate?token=" + newProfile.getActivationToken();
+		String activationLink = activationURL + "/api/v1/activate?token=" + newProfile.getActivationToken();
 		String subject = "Activate your Money Manager account";
 		String body = "Click on the following link to activate your account: " + activationLink;
 		emailService.sendEmail(newProfile.getEmail(), subject, body);
