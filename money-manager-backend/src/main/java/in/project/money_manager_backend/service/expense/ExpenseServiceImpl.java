@@ -84,6 +84,13 @@ public class ExpenseServiceImpl implements IExpenseService {
 				profile.getId(), startDate, endDate, keyword, sort);
 		return expenses.stream().map(this::convertToDto).toList();
 	}
+	
+	// Notification
+	@Override
+	public List<ExpenseDto> getExpensesForUserOnDate(Long profileId, LocalDate date) {
+		List<ExpenseEntity> expenses = expenseRepository.findByProfileIdAndDate(profileId, date);
+		return expenses.stream().map(this::convertToDto).toList();
+	}
 
 	private ExpenseEntity convertToEntity(ExpenseDto dto, ProfileEntity profile, CategoryEntity category) {
 		return ExpenseEntity.builder().name(dto.getName()).icon(dto.getIcon()).amount(dto.getAmount())

@@ -21,4 +21,6 @@ public interface IExpenseService {
 	BigDecimal getTotelExpenseForCurrentUser();
 
 	List<ExpenseDto> filterExpenses(LocalDate startDate, LocalDate endDate, String keyword, Sort sort);
+
+	List<ExpenseDto> getExpensesForUserOnDate(Long profileId, LocalDate date);
 }
