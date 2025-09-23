@@ -30,9 +30,7 @@ const MenuBar = ({ activeMenu }) => {
             document.addEventListener("mousedown", handleClickOutSide);
         }
 
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutSide);
-        }
+        return () => document.removeEventListener("mousedown", handleClickOutSide);
     }, [showDropDown])
 
     return (
@@ -59,9 +57,9 @@ const MenuBar = ({ activeMenu }) => {
             <div className="relative" ref={dropDownRef}>
                 <button
                     onClick={() => setShowDropDown(!showDropDown)}
-                    className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-800 focus:ring-offset-2"
+                    className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-800 focus:ring-offset-2 cursor-pointer"
                 >
-                    <User className="text-purple-500 cursor-pointer" />
+                    <User className="text-purple-500" />
                 </button>
 
                 {/* Show dropdown */}

@@ -50,4 +50,10 @@ public class ProfileController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
 		}
 	}
+	
+	@GetMapping("/profile")
+	public ResponseEntity<ProfileDto> getPublicProfile() {
+		ProfileDto profile = profileService.getPublicProfile(null);
+		return ResponseEntity.ok(profile);
+	}
 }
