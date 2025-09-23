@@ -23,7 +23,6 @@ const Category = () => {
         try {
             const response = await axiosConfig.get(API_ENDPOINTS.GET_ALL_CATEGORIES);
             if (response.status === 200) {
-                console.log('Categories', response.data);
                 setCategoryData(response.data);
             }
         } catch (error) {
@@ -31,6 +30,63 @@ const Category = () => {
             toast.error(error.message);
         } finally {
             setLoading(false);
+        }
+    }
+
+    const handleAddCategory = async (category) => {
+        const { name, type, icon } = category;
+        if (!name.trim()) {
+            toast.error('Category name is required');
+            return;
+        }
+
+        // check if already category already exists
+        const isDuplicate = categoryData.some((category) => {
+            return category.name.toLowerCase() === name.trim().toLowerCase();
+        });
+        if (isDuplicate) {
+            toast.error('Category with this name already exists');
+            return;
+        }
+
+        try {
+            const response = await axiosConfig.post(API_ENDPOINTS.ADD_CATEGORY, { name, type, icon });
+            if (response.status === 201) {
+                toast.success('Category added successfully');
+                setOpenAddCategoryModel(false);
+                fetchCategories();
+            }
+        } catch (error) {
+            console.log('Error adding category', error);
+            toast.error(error.response?.data?.message || "Failed to add category.")
+        }
+    }
+
+    const handleEditCategory = (categoryToEdit) => {
+        setSelectedCategory(categoryToEdit);
+        setOpenEditCategoryModel(true);
+    }
+
+    const handleUpdateCategory = async (updatedCategory) => {
+        const { id, name, type, icon } = updatedCategory;
+        if (!name.trim()) {
+            toast.error('Category name is required');
+            return;
+        }
+        if (!id) {
+            toast.error('Category Id is missing for update');
+            return;
+        }
+
+        try {
+            await axiosConfig.put(API_ENDPOINTS.UPDATE_CATEGORY(id), { name, type, icon });
+            setOpenEditCategoryModel(false);
+            setSelectedCategory(null);
+            toast.success('Category updated successfully');
+            fetchCategories();
+        } catch (error) {
+            console.log("Error updating the category", error.response.data.message || error.message);
+            toast.error(error.response?.data?.message, "Failed to update the category");
         }
     }
 
@@ -55,6 +111,7 @@ const Category = () => {
                 {/* Category list */}
                 <CategoryList
                     categories={categoryData}
+                    onEditCategory={handleEditCategory}
                 />
 
                 {/* Adding category model */}
@@ -63,10 +120,24 @@ const Category = () => {
                     onClose={() => setOpenAddCategoryModel(false)}
                     title={"Add Category"}
                 >
-                    <AddCategoryForm />
+                    <AddCategoryForm onAddCategory={handleAddCategory} />
                 </Model>
 
                 {/* Updating category model */}
+                <Model
+                    isOpen={openEditCategoryModel}
+                    onClose={() => {
+                        setOpenEditCategoryModel(false);
+                        setSelectedCategory(null);
+                    }}
+                    title={"Update Category"}
+                >
+                    <AddCategoryForm
+                        initialCategoryData={selectedCategory}
+                        onAddCategory={handleUpdateCategory}
+                        isEditing={true}
+                    />
+                </Model>
             </div>
         </Dashboard>
     )

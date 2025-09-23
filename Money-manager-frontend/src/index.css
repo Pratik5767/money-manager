@@ -42,7 +42,7 @@ body {
 }
 
 .add-btn {
-    background-color: #8e4cff;
+    background-color: #743bd5;
     color: #fff;
     border: none;
     border-radius: 50px;
@@ -55,13 +55,21 @@ body {
 }
 
 .add-btn:hover {
-    background-color: #723ace;
+    background-color: #6533b5;
 }
 
 .add-btn:active {
     background-color: #5a23b5;
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 2px 4px rgba(90, 35, 181, 0.12);
+}
+
+.add-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #6d42db;
+    color: #f3f0fa;
 }
 
 .card {
