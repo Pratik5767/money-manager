@@ -61,7 +61,7 @@ const AddCategoryForm = ({ onAddCategory, initialCategoryData, isEditing }) => {
             />
 
             <div className="flex justify-end mt-6">
-                <button disabled={loading} type="button" onClick={handleSubmit} className="flex items-center gap-2 add-btn">
+                <button disabled={loading} type="button" onClick={handleSubmit} className="flex items-center gap-2 add-btn add-btn-fill">
                     {
                         loading ? (
                             <>

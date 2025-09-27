@@ -42,34 +42,25 @@ body {
 }
 
 .add-btn {
-    background-color: #743bd5;
-    color: #fff;
+    background-color: #f0fdf4;
+    color: #0a9149;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     padding: 10px 24px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(108, 43, 217, 0.15);
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-
-.add-btn:hover {
-    background-color: #6533b5;
 }
 
 .add-btn:active {
-    background-color: #5a23b5;
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 2px 4px rgba(90, 35, 181, 0.12);
 }
 
-.add-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
-    background-color: #6d42db;
-    color: #f3f0fa;
+.add-btn-fill {
+    color: #fff;
+    background-color: #6C2BD9;
 }
 
 .card {
@@ -80,4 +71,36 @@ body {
     margin: 12px 0;
     transition: box-shadow 0.2s, transform 0.2s;
     border: 1px solid #ececec;
+}
+
+.card-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f7f6fa;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 15px;
+    color: #431887;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+    box-shadow: 0 1px 4px rgba(67, 24, 135, 0.07);
+}
+
+.card-btn:hover {
+    background: #ece6fa;
+    box-shadow: 0 2px 8px rgba(67, 24, 135, 0.13);
+}
+
+.card-btn:active {
+    background: #e0d6f7;
+}
+
+.card-btn svg {
+    width: 20px;
+    height: 20px;
+    color: #431887;
+    flex-shrink: 0;
 }

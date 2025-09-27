@@ -103,7 +103,7 @@ const Category = () => {
 
                     <button
                         onClick={() => setOpenAddCategoryModel(true)}
-                        className="add-btn flex items-center gap-1 rounded-full">
+                        className="add-btn flex items-center gap-1">
                         <Plus size={16} /> Add Category
                     </button>
                 </div>

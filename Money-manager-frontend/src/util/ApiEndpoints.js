@@ -9,5 +9,9 @@ export const API_ENDPOINTS = {
     GET_USER_INFO: "/profile",
     GET_ALL_CATEGORIES: "/categories/get",
     ADD_CATEGORY: "/categories/save",
-    UPDATE_CATEGORY: (id) => `/categories/${id}/update`
+    UPDATE_CATEGORY: (id) => `/categories/${id}/update`,
+    GET_ALL_INCOMES: "/incomes/get",
+    CATEGORY_BY_TYPE: (type) => `/categories/${type}/get`,
+    ADD_INCOME: "/incomes/add",
+    DELETE_INCOME: (incomeId) => `/incomes/${incomeId}`
 }
