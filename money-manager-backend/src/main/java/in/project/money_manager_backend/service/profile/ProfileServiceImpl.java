@@ -16,7 +16,7 @@ import in.project.money_manager_backend.dto.AuthDto;
 import in.project.money_manager_backend.dto.ProfileDto;
 import in.project.money_manager_backend.entity.ProfileEntity;
 import in.project.money_manager_backend.repository.ProfileRepository;
-import in.project.money_manager_backend.service.EmailService;
+import in.project.money_manager_backend.service.mail.EmailService;
 import in.project.money_manager_backend.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 

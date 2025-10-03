@@ -1,4 +1,4 @@
-package in.project.money_manager_backend.service;
+package in.project.money_manager_backend.service.mail;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
