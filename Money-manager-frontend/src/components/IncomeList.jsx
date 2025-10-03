@@ -1,21 +1,61 @@
-import { Download, Mail } from "lucide-react"
+import { Download, LoaderCircle, Mail } from "lucide-react"
 import TransactionInfoCard from "./TransactionInfoCard"
 import moment from "moment"
+import { useState } from "react";
 
-const IncomeList = ({ transactions, onDelete }) => {
-    
+const IncomeList = ({ transactions, onDelete, onDownload, onEmail }) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleEmail = async () => {
+        setLoading(true);
+        try {
+            await onEmail();
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleDownload = async () => {
+        setLoading(true);
+        try {
+            await onDownload();
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div className="card">
             <div className="flex items-center justify-between">
-                <h5 className="text-lg font-semibold">Income Sources</h5>
+                <h5 className="text-lg">Income Sources</h5>
 
                 <div className="flex items-center justify-end gap-2">
-                    <button className="card-btn">
-                        <Mail size={15} className="text-base" /> Email
+                    <button disabled={loading} onClick={handleEmail} className="card-btn">
+                        {
+                            loading ? (
+                                <>
+                                    <LoaderCircle className="w-4 h-4 animate-spin" /> Emailing...
+                                </>
+                            ) : (
+                                <>
+                                    <Mail size={15} className="text-base" /> Email
+                                </>
+                            )
+                        }
                     </button>
 
-                    <button className="card-btn">
-                        <Download size={15} className="text-base" /> Download
+                    <button disabled={loading} onClick={handleDownload} className="card-btn">
+                        {
+                            loading ? (
+                                <>
+                                    <LoaderCircle className="w-4 h-4 animate-spin" /> Downloading...
+                                </>
+                            ) : (
+                                <>
+                                    <Download size={15} className="text-base" /> Download
+                                </>
+                            )
+                        }
                     </button>
                 </div>
             </div>

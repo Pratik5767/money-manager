@@ -24,3 +24,60 @@ export const addThousandsSeparator = (num) => {
     // Combine integer and fractional parts
     return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
 }
+
+// Groups transactions by date and prepares data for the line chart
+export const prepareIncomeLineChartData = (transactions) => {
+    if (!Array.isArray(transactions)) return [];
+    // Group by date
+    const grouped = {};
+    transactions.forEach(tx => {
+        const date = tx.date;
+        if (!grouped[date]) {
+            grouped[date] = {
+                date,
+                totalAmount: 0,
+                items: [],
+            };
+        }
+        grouped[date].totalAmount += Number(tx.amount || 0);
+        grouped[date].items.push(tx);
+    });
+    // Convert to array and add month field (e.g., '12th Jul 2025')
+    return Object.values(grouped).map(obj => {
+        const d = new Date(obj.date);
+        const day = d.getDate();
+        const month = d.toLocaleString('default', { month: 'short' });
+        const year = d.getFullYear();
+        // Add ordinal suffix to day
+        const getOrdinal = n => n + (['st', 'nd', 'rd'][((n + 90) % 100 - 10) % 10 - 1] || 'th');
+        obj.month = `${getOrdinal(day)} ${month} ${year}`;
+        return obj;
+    });
+}
+
+// Groups expense transactions by date and prepares data for the line chart
+export const prepareExpenseLineChartData = (transactions) => {
+    if (!Array.isArray(transactions)) return [];
+    const grouped = {};
+    transactions.forEach(tx => {
+        const date = tx.date;
+        if (!grouped[date]) {
+            grouped[date] = {
+                date,
+                totalAmount: 0,
+                items: [],
+            };
+        }
+        grouped[date].totalAmount += Number(tx.amount || 0);
+        grouped[date].items.push(tx);
+    });
+    return Object.values(grouped).map(obj => {
+        const d = new Date(obj.date);
+        const day = d.getDate();
+        const month = d.toLocaleString('default', { month: 'short' });
+        const year = d.getFullYear();
+        const getOrdinal = n => n + (['st', 'nd', 'rd'][((n + 90) % 100 - 10) % 10 - 1] || 'th');
+        obj.month = `${getOrdinal(day)} ${month} ${year}`;
+        return obj;
+    });
+}

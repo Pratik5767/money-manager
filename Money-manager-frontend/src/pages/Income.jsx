@@ -6,9 +6,9 @@ import { API_ENDPOINTS } from "../util/ApiEndpoints";
 import toast from "react-hot-toast";
 import IncomeList from "../components/IncomeList";
 import Model from "../components/Model";
-import { Plus } from "lucide-react";
 import AddIncomeForm from "../components/AddIncomeForm";
 import DeleteAlert from "../components/DeleteAlert";
+import IncomeOverview from "../components/IncomeOverview";
 
 const Income = () => {
     useUser();
@@ -32,7 +32,7 @@ const Income = () => {
                 setIncomeData(response.data);
             }
         } catch (error) {
-            console.log('Failed to fetch the income  details: ', error)
+            console.log('Failed to fetch the income details: ', error)
             toast.error(error.response?.data?.message || "Failed to fetch income details");
         } finally {
             setLoading(false);
@@ -112,6 +112,40 @@ const Income = () => {
         }
     }
 
+    const handleDownloadIncomeDetails = async () => {
+        try {
+            const response = await axiosConfig.get(API_ENDPOINTS.INCOME_EXCEL_DOWNLOAD, {
+                responseType: 'blob'
+            });
+            console.log(response);
+            let fileName = "income_details.xlsx";
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            toast.success('Downloaded the income details successfully');
+        } catch (error) {
+            console.log('Error downloading the income details: ', error);
+            toast.error(error.response?.data?.message || 'Failed to download income');
+        }
+    }
+
+    const handleEmailIncomeDetails = async () => {
+        try {
+            const response = await axiosConfig.get(API_ENDPOINTS.EMAIL_INCOME_DOWNLOAD);
+            if (response.status === 200) {
+                toast.success('Income details emailed successfully');
+            }
+        } catch (error) {
+            console.log('Error emailing the income details: ', error);
+            toast.error(error.response?.data?.message || 'Failed to email income');
+        }
+    }
+
     useEffect(() => {
         fetchIncomeDetails();
         fetchIncomeCatgories();
@@ -123,14 +157,17 @@ const Income = () => {
                 <div className="grid grid-cols-1 gap-6">
                     <div>
                         {/* overview for income with line chart */}
-                        <button className="flex gap-2 items-center add-btn" onClick={() => setOpenAddIncomeModel(true)}>
-                            <Plus size={16} className="text-lg" /> Add Income
-                        </button>
+                        <IncomeOverview
+                            transactions={incomeData}
+                            onAddIncome={() => setOpenAddIncomeModel(true)}
+                        />
                     </div>
 
                     <IncomeList
                         transactions={incomeData}
                         onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
+                        onDownload={handleDownloadIncomeDetails}
+                        onEmail={handleEmailIncomeDetails}
                     />
 
                     {/* Add Income Model */}
