@@ -78,7 +78,6 @@ const Income = () => {
             toast.error('category is required');
             return;
         }
-
         try {
             const response = await axiosConfig.post(API_ENDPOINTS.ADD_INCOME, {
                 name,
@@ -127,7 +126,7 @@ const Income = () => {
             link.click();
             link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url);
-            toast.success('Downloaded the income details successfully');
+            toast.success('income details Downloaded');
         } catch (error) {
             console.log('Error downloading the income details: ', error);
             toast.error(error.response?.data?.message || 'Failed to download income');
@@ -138,7 +137,7 @@ const Income = () => {
         try {
             const response = await axiosConfig.get(API_ENDPOINTS.EMAIL_INCOME_DOWNLOAD);
             if (response.status === 200) {
-                toast.success('Income details emailed successfully');
+                toast.success('Income details emailed');
             }
         } catch (error) {
             console.log('Error emailing the income details: ', error);
