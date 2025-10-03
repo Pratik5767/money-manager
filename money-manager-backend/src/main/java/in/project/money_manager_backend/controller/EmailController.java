@@ -49,10 +49,10 @@ public class EmailController {
 		excelService.writeExpenseToExcel(baos, expenseService.getCurrentMonthExpensesForCurrentUser());
 		emailService.sendEmailWithAttachment(
 				profile.getEmail(), 
-				"Your Income Excel Report",
-				"Please find attached your income report", 
+				"Your Expense Excel Report",
+				"Please find attached your expense report", 
 				baos.toByteArray(), 
-				"income.xlsx");
+				"expense.xlsx");
 		return ResponseEntity.ok(null);
 	}
 
