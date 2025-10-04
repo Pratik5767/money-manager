@@ -27,7 +27,7 @@ const ExpenseList = ({ transactions, onDelete, onDownload, onEmail }) => {
     return (
         <div className="card">
             <div className="flex items-center justify-between">
-                <h5 className="text-lg">Expense Sources</h5>
+                <h5 className="text-lg font-medium">Expense Sources</h5>
 
                 <div className="flex items-center justify-end gap-2">
                     <button disabled={loading} onClick={handleEmail} className="card-btn">

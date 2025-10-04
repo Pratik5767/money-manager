@@ -18,7 +18,7 @@ import in.project.money_manager_backend.service.income.IIncomeService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/filter")
+@RequestMapping("/filters")
 @RequiredArgsConstructor
 public class FilterController {
 

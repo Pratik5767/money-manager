@@ -21,4 +21,5 @@ export const API_ENDPOINTS = {
     EMAIL_INCOME_DOWNLOAD: '/email/income-excel',
     EXPENSE_EXCEL_DOWNLOAD: '/excel/download/expense',
     EMAIL_EXPENSE_DOWNLOAD: '/email/expense-excel',
+    APPLY_FILTERS: `/filters`
 }
