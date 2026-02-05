@@ -101,3 +101,9 @@ docker-compose.override.yml
 ############################
 .cache/
 tmp/
+
+
+############################
+# application.properties
+############################
+src/main/resources/application.properties
