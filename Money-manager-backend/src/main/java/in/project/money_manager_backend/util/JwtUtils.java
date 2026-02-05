@@ -23,6 +23,7 @@ public class JwtUtils {
         return createToken(claims, email);
     }
 
+    @SuppressWarnings("deprecation")
     private String createToken(Map<String, Object> claims, String email) {
         return Jwts.builder()
             .setClaims(claims)
@@ -38,6 +39,7 @@ public class JwtUtils {
         return claimsResolver.apply(claims);
     }
 
+    @SuppressWarnings("deprecation")
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
